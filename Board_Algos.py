@@ -116,28 +116,3 @@ class GeneticNQueens:
                 next_gen.append(child)
             population = next_gen
         return population[0] if fitness(population[0]) == n * (n - 1) // 2 else None
-
-
-def visualize_board(board, n):
-    fig, ax = plt.subplots()
-    ax.set_xlim(0, n)
-    ax.set_ylim(0, n)
-    ax.set_xticks(range(n))
-    ax.set_yticks(range(n))
-    ax.set_xticklabels([])
-    ax.set_yticklabels([])
-    ax.set_aspect('equal')
-    ax.set_title(f'{n}-Queens Solution')
-
-    for row in range(n):
-        for col in range(n):
-            color = 'white' if (row + col) % 2 == 0 else 'gray'
-            rect = plt.Rectangle((col, n - row - 1), 1, 1, facecolor=color)
-            ax.add_patch(rect)
-
-    for row, col in enumerate(board):
-        ax.text(col + 0.5, n - row - 0.5, '♛', fontsize=20, ha='center', va='center', color='red')
-
-    plt.grid(True)
-    plt.show()
-
