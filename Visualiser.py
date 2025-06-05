@@ -5,7 +5,7 @@ import random
 import math
 from Board_Algos import DFSNQueens, HillClimbingNQueens, GeneticNQueens, SimulatedAnnealingNQueens
 
-def visualize_random_board(n):  # Only for visualizing the board
+def visualize_random_board(n):  # Only for visualizing the board,
     # Generate a random board: one queen per row, random column
     board = [random.randint(0, n - 1) for _ in range(n)]
 
@@ -33,5 +33,5 @@ def visualize_random_board(n):  # Only for visualizing the board
     plt.grid(True)
     plt.show()
     
-visualize_random_board(8)
+visualize_random_board(15) #preferably dont exceed 15, as the queen representation becomes junky.
 

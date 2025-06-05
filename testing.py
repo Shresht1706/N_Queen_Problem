@@ -18,7 +18,8 @@ def test_algorithm(algo_class, n, runs):
     average_time = total_time / runs
     success_rate = success_count / runs
     print(f"Average time: {average_time:.4f}s")
-    print(f"Success rate: {success_rate*100:.0f}%")
+    if runs > 1:
+        print(f"Success rate: {success_rate*100:.0f}%")
     return average_time, success_rate
 
-test_algorithm(GeneticNQueens, 100, 1)
+test_algorithm(GeneticNQueens, 200, 1)
