@@ -1,0 +1,197 @@
+import random
+import math
+
+
+class HillClimbingNQueens:
+    def solve(self, n):
+        def compute_conflicts(board):
+            conflicts = 0
+            for i in range(n):
+                for j in range(i + 1, n):
+                    if board[i] == board[j] or abs(board[i] - board[j]) == abs(i - j):
+                        conflicts += 1
+            return conflicts
+
+        def get_neighbors(board):
+            neighbors = []
+            for row in range(n):
+                for col in range(n):
+                    if board[row] != col:
+                        new_board = board[:]
+                        new_board[row] = col
+                        neighbors.append(new_board)
+            return neighbors
+
+        board = [random.randint(0, n - 1) for _ in range(n)]
+        current = board
+        current_conflicts = compute_conflicts(current)
+        while True:
+            neighbors = get_neighbors(current)
+            neighbor = min(neighbors, key=compute_conflicts)
+            neighbor_conflicts = compute_conflicts(neighbor)
+            if neighbor_conflicts >= current_conflicts:
+                break
+            current, current_conflicts = neighbor, neighbor_conflicts
+            if current_conflicts == 0:
+                break
+        return current if compute_conflicts(current) == 0 else None
+
+
+
+
+import random
+import math
+
+class GeneticNQueens:
+    def solve(self, n):
+        def fitness(board):
+            non_attacking = 0
+            for i in range(n):
+                for j in range(i + 1, n):
+                    if board[i] != board[j] and abs(board[i] - board[j]) != abs(i - j):
+                        non_attacking += 1
+            return non_attacking
+
+        def crossover(p1, p2):
+            point = random.randint(0, n - 1)
+            child = p1[:point] + p2[point:]
+            return child
+
+        def mutate(board):
+            board[random.randint(0, n - 1)] = random.randint(0, n - 1)
+            return board
+
+        population = [[random.randint(0, n - 1) for _ in range(n)] for _ in range(100)]
+        for generation in range(1000):
+            population = sorted(population, key=lambda x: -fitness(x))
+            if fitness(population[0]) == n * (n - 1) // 2:
+                return population[0]
+            next_gen = population[:20]
+            while len(next_gen) < 100:
+                p1, p2 = random.choices(population[:50], k=2)
+                child = mutate(crossover(p1, p2))
+                next_gen.append(child)
+            population = next_gen
+        return population[0] if fitness(population[0]) == n * (n - 1) // 2 else None
+
+
+import random
+import matplotlib.pyplot as plt
+
+class GeneticNQueens:
+    def solve(self, n):
+        def fitness(board):
+            non_attacking = 0
+            for i in range(n):
+                for j in range(i + 1, n):
+                    if board[i] != board[j] and abs(board[i] - board[j]) != abs(i - j):
+                        non_attacking += 1
+            return non_attacking
+
+        def crossover(p1, p2):
+            point = random.randint(0, n - 1)
+            return p1[:point] + p2[point:]
+
+        def mutate(board):
+            board[random.randint(0, n - 1)] = random.randint(0, n - 1)
+            return board
+
+        max_fitness = n * (n - 1) // 2
+        population = [[random.randint(0, n - 1) for _ in range(n)] for _ in range(100)]
+        generation = 0
+
+        while True:
+            generation += 1
+            print(f"Generation {generation}")
+            population = sorted(population, key=lambda x: -fitness(x))
+            if fitness(population[0]) == max_fitness:
+                print(f"Solution found in generation {generation}")
+                return population[0]
+            next_gen = population[:20]
+            while len(next_gen) < 100:
+                p1, p2 = random.choices(population[:50], k=2)
+                child = mutate(crossover(p1, p2))
+                next_gen.append(child)
+            population = next_gen
+
+def visualize_board(board, n):
+    fig, ax = plt.subplots()
+    ax.set_xlim(0, n)
+    ax.set_ylim(0, n)
+    ax.set_yticks(range(n))
+    ax.set_xticklabels([])
+    ax.set_yticklabels([])
+    ax.set_aspect('equal')
+    ax.set_title(f'{n}-Queens Solution (Genetic Algorithm)')
+
+    for row in range(n):
+        for col in range(n):
+            color = 'white' if (row + col) % 2 == 0 else 'gray'
+            rect = plt.Rectangle((col, n - row - 1), 1, 1, facecolor=color)
+            ax.add_patch(rect)
+
+    for row, col in enumerate(board):
+        ax.text(col + 0.5, n - row - 0.5, '♛', fontsize=20, ha='center', va='center', color='red')
+
+    plt.grid(True)
+    plt.show()
+
+# Example usage:
+n = 200
+solver = GeneticNQueens()
+solution = solver.solve(n)
+
+print(f"Solved {n}-Queens board:", solution)
+# Commented out for large boards, but you can use it for smaller ones:
+visualize_board(solution, n)
+
+
+1. Memory allocation plateaus at certain levels
+The Python process (interpreter + libraries + your code) has a baseline memory footprint that doesn’t shrink easily during a run.
+
+When your program allocates memory for larger N, Python and the OS may allocate memory in chunks or pages.
+
+After a certain point, the allocated memory stabilizes because:
+
+Python reuses memory.
+
+The memory allocator rounds up allocations to page sizes.
+
+Internal buffers (lists, arrays) grow but only in steps.
+
+So for N=100 and N=200, total RSS may be close if the extra data structures don’t cross a big new allocation boundary.
+
+2. Your genetic algorithm parameters may dominate memory usage
+Population size, tournament size, and other parameters affect memory more than just N alone.
+
+For example, if population size scales linearly with N (like population_size = n * 10), then population for N=200 (2000 individuals) is roughly double that for N=100 (1000 individuals).
+
+But the difference might not double memory usage, because Python objects and internal data structures might not scale perfectly linearly or some memory might be shared/reused.
+
+3. Memory fragmentation and OS-level caching
+Memory usage reported by OS (psutil) can include fragmented or cached memory that isn’t freed immediately.
+
+Even if your Python objects are smaller for N=100, your process might still hold onto pages allocated during the N=200 run.
+
+4. Peak memory by tracemalloc vs total memory by psutil
+Peak memory (tracemalloc) is tracking just Python heap allocations, so it should reflect some growth with N.
+
+Total memory (psutil RSS) is more stable and reflects the entire process size.
+
+You might see peak memory grow with N, but total process memory stay similar due to reasons above.
+
+What you can do to check/confirm:
+Run multiple trials, monitor memory before and after your program runs.
+
+Use tracemalloc peak memory as a better indicator of your algorithm's Python memory consumption growth.
+
+Use Python memory profilers (like memory_profiler) for line-by-line memory use.
+
+Check if your OS is caching memory — sometimes running a memory-intensive program releases memory only on program exit.
+
+TL;DR
+The total memory usage (RSS) often stays similar for different N because it includes the entire Python interpreter and system-level memory allocation which doesn’t shrink easily.
+
+The Python heap memory (tracked by tracemalloc) is a better metric for your algorithm’s actual memory usage and should scale more clearly with N.
+
+Your process’s base memory footprint can mask increases unless they are very large.
