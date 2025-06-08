@@ -5,7 +5,7 @@ import tracemalloc
 import psutil
 import os
 import csv
-from Com_Funcs import compute_conflicts
+from Com_Funcs import compute_conflicts, test_algorithm
 
 class SimulatedAnnealingNQueens:
     @classmethod
@@ -21,6 +21,7 @@ class SimulatedAnnealingNQueens:
                         conflicts[i] += 1
             return conflicts
 
+        print("Solving ...")
         tracemalloc.start()
         start_time = time.time()
 
@@ -96,7 +97,5 @@ class SimulatedAnnealingNQueens:
                 f"{peak_memory_kb:.2f}", f"{total_memory_kb:.2f}"
             ])
 
-if __name__ == "__main__":
-    solver = SimulatedAnnealingNQueens
-    result = solver.solve(30)
-    print(result)
+SimulatedAnnealingNQueens.solve(200)
+test_algorithm(SimulatedAnnealingNQueens,10,200)
