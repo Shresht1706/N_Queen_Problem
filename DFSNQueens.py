@@ -1,10 +1,9 @@
 import random
 import math
-from Com_Funcs import test_algorithm, visualize_board
+from Com_Funcs import test_algorithm
 import tracemalloc
 import csv
 import os
-import psutil
 import time
 
 class DFSNQueens:
@@ -67,5 +66,6 @@ class DFSNQueens:
             if not file_exists:
                 writer.writerow(['N', 'Recursive Calls', 'Time (s)', 'Peak Memory (KB)', 'Total Memory (KB)'])
             writer.writerow([n, recursive_calls, f"{time_taken:.4f}", f"{peak_memory_kb:.2f}", f"{total_memory_kb:.2f}"])
+            
 
-test_algorithm(DFSNQueens, 10, 30)
+#test_algorithm(DFSNQueens, 10, 30)

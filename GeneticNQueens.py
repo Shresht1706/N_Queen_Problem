@@ -95,40 +95,4 @@ class GeneticNQueens:
     
     import csv
 
-    def print_genetic_averages_by_n(input_csv, target_n):
-        filtered_rows = []
-        headers = [
-            "N", "Generations", "Population", "Elite", "Tournament",
-            "Fitness", "Time (s)", "Peak Memory (KB)", "Total Memory (KB)"
-        ]
-
-        # Read and filter rows
-        with open(input_csv, newline='') as infile:
-            reader = csv.reader(infile)
-            for row in reader:
-                try:
-                    float_row = list(map(float, row))
-                    if int(float_row[0]) == target_n:
-                        filtered_rows.append(float_row)
-                except ValueError:
-                    continue  # skip header or bad rows
-
-        if not filtered_rows:
-            print(f"⚠️ No entries found for N = {target_n} in {input_csv}")
-            return
-
-        # Compute averages
-        num_cols = len(filtered_rows[0])
-        averages = [target_n]
-        for col in range(1, num_cols):
-            avg = sum(row[col] for row in filtered_rows) / len(filtered_rows)
-            averages.append(round(avg, 2))
-
-        # Print headers and values
-        print("=== AVERAGES FOR N =", target_n, "===")
-        for header, value in zip(headers, averages):
-            print(f"{header}: {value}")
-
-
 #test_algorithm(GeneticNQueens,10,30)
-GeneticNQueens.print_genetic_averages_by_n("GNQ_Results.csv", 200)

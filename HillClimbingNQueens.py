@@ -1,7 +1,6 @@
 import random
 import time
 import tracemalloc
-import psutil
 import os
 import csv
 from Com_Funcs import compute_conflicts,test_algorithm  # Ensure this function is efficient and correct
@@ -73,6 +72,9 @@ class HillClimbingNQueens:
             csv_file, n, steps, current_conflicts, time_taken,
             peak_mem / 1024, total_mem_kb
         )
+        
+        if current_conflicts % 1 == 0:
+            print(f"Conflicts: {current_conflicts}")
 
         if current_conflicts == 0:
             print(f"✅ Solved {n}-Queens in {steps} steps, {restart+1} restarts, {time_taken:.2f}s")
@@ -95,7 +97,9 @@ class HillClimbingNQueens:
                 n, steps, conflicts, f"{time_taken:.2f}",
                 f"{peak_memory_kb:.2f}", f"{total_memory_kb:.2f}"
             ])
+            
+
+
 
 # Example usage:
-#HillClimbingNQueens.solve(10)
-test_algorithm(HillClimbingNQueens,10,200)
+HillClimbingNQueens.solve(200)
