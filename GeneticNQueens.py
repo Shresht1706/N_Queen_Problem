@@ -4,7 +4,7 @@ import csv
 import os
 import psutil
 import time
-from Com_Funcs import test_algorithm  # visualize_board omitted for performance
+from Com_Funcs import test_algorithm 
 
 class GeneticNQueens:
     @classmethod

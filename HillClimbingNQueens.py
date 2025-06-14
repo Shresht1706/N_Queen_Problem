@@ -3,7 +3,7 @@ import time
 import tracemalloc
 import os
 import csv
-from Com_Funcs import compute_conflicts,test_algorithm  # Ensure this function is efficient and correct
+from Com_Funcs import compute_conflicts,test_algorithm 
 
 class HillClimbingNQueens:
     @classmethod
@@ -57,8 +57,8 @@ class HillClimbingNQueens:
                     break
 
             if current_conflicts == 0:
-                print(f"✅ Solved after {restart+1} restart(s)")
-                break  # Successful solution found
+                print(f" Solved after {restart+1} restart(s)")
+                break  
 
         end_time = time.time()
         current_mem, peak_mem = tracemalloc.get_traced_memory()
@@ -77,10 +77,10 @@ class HillClimbingNQueens:
             print(f"Conflicts: {current_conflicts}")
 
         if current_conflicts == 0:
-            print(f"✅ Solved {n}-Queens in {steps} steps, {restart+1} restarts, {time_taken:.2f}s")
+            print(f" Solved {n}-Queens in {steps} steps, {restart+1} restarts, {time_taken:.2f}s")
             return current
         else:
-            print(f"❌ Failed after {max_restarts} restarts. Conflicts: {current_conflicts}")
+            print(f" Failed after {max_restarts} restarts. Conflicts: {current_conflicts}")
             return None
 
     @staticmethod

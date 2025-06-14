@@ -58,7 +58,7 @@ class SimulatedAnnealingNQueens:
             delta = new_conflicts - min_conflicts
 
             if delta > 0 and random.random() >= math.exp(-delta / temp):
-                board[row] = current_col  # reject the worse move
+                board[row] = current_col
 
             temp *= cooling_rate
             steps += 1

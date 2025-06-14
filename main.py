@@ -1,3 +1,5 @@
+#Not really used can ignore
+
 from HillClimbingNQueens import HillClimbingNQueens
 from SimulatedAnnealingNQueens import SimulatedAnnealingNQueens
 from DFSNQueens import DFSNQueens
