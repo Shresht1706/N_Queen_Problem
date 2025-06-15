@@ -1,2 +1,1 @@
-# N_Queen_Problem
-
+Report - https://www.overleaf.com/read/ncmqbxmvqgwg#075bc2
